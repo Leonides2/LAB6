@@ -65,6 +65,11 @@ app.use(session({
 app.use(oidc.router);
 
 app.get("/",  (req, res) => {
+
+  if(req.oidc.isAuthenticated()) {
+    return res.redirect("/dashboard");
+  }
+
   res.render("index");  
 });
 
