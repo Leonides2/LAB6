@@ -18,7 +18,8 @@ require('dotenv').config();
 const OKTA_ISSUER_URI = process.env.OKTA_ISSUER_URI;
 const OKTA_CLIENT_ID = process.env.OKTA_CLIENT_ID;
 const OKTA_CLIENT_SECRET = process.env.OKTA_CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/dashboard";
+const REDIRECT_URI = process.env.REDIRECT_URI || "http://localhost:3000/callback";
+const APP_URL = process.env.APP_URL || "http://localhost:3000";
 const PORT = process.env.PORT || "3000";
 const SECRET = process.env.SECRET; 
 
@@ -27,7 +28,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: SECRET,
-  baseURL: 'http://localhost:3000/',
+  baseURL: APP_URL || 'http://localhost:3000',
   clientID: OKTA_CLIENT_ID,
   issuerBaseURL: OKTA_ISSUER_URI
 };
@@ -38,8 +39,8 @@ let oidc = new ExpressOIDC({
   client_id: OKTA_CLIENT_ID,
   client_secret: OKTA_CLIENT_SECRET,
   redirect_uri: REDIRECT_URI,
-  appBaseUrl: 'http://localhost:3000',
-  routes: { callback: { defaultRedirect: "http://localhost:3000/dashboard" } },
+  appBaseUrl: APP_URL,
+  routes: { callback: { defaultRedirect: APP_URL + "/dashboard" } },
   scope: 'openid profile'
 });
 
